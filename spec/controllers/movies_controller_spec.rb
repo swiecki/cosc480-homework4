@@ -72,4 +72,25 @@ describe MoviesController do
       response.should redirect_to(:ratings => 'R')
     end
   end
+
+  describe 'find with same director' do
+    it 'should redirect if movie has no director' do
+      movie = mock('Movie')
+      movie.stub(:title).and_return('Gladiator')
+      movie.stub(:director).and_return('')
+      Movie.should_receive(:find).and_return(movie)
+      get :findWithSameDirector, {:id => '1'}
+      response.should redirect_to(movies_path)
+    end
+    it 'should show other movies with the same director' do
+      movie = mock('Movie')
+      movie.stub(:title).and_return('Gladiator')
+      movie.stub(:director).and_return('Ridley Scott')
+      Movie.should_receive(:find).with('1').and_return(movie)
+      results = [mock('Movie'),mock('Movie')]
+      Movie.should_receive(:find_all_by_director).and_return(results)
+      get :findWithSameDirector, {:id => '1'}
+      response.should render_template('findWithSameDirector')
+    end
+  end
 end

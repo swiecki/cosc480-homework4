@@ -18,7 +18,7 @@ module NavigationHelpers
      when /^the Create New Movie page$/ then '/movies/new'
      when /^the details page for "(.*)"/ then "/movies/#{Movie.where("title = ?", $1)[0][:id]}"
      when /^the edit page for "(.*)"/ then "/movies/#{Movie.where("title = ?", $1)[0][:id]}/edit"
-
+     when /^the Similar Movies page for "(.*)"/ then "/movies/findWithSameDirector/#{Movie.where("title = ?", $1)[0][:id]}"
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
